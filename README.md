@@ -7,7 +7,8 @@ WIP
 ## Cấu trúc
 WIP
 ## Cài đặt
-### I. Cài đặt backend và database:
+### I. Cài đặt backend và database (dev):
+- Cài đặt [Docker](https://www.docker.com/)
 - PostgresSQL đã được cấu hình để chạy cùng với ứng dụng (Trong thực tế, có thể dùng PostgresSQL trên server khác.
 Tham khảo: [Tài liệu](https://docs.spring.io/spring-boot/appendix/application-properties/index.html#appendix.application-properties.data))
 - Clone repository về máy và chuyển đến thư mục `backend`
