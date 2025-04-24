@@ -1,4 +1,6 @@
 import UserNavbar from "../../components/UserNavbar.tsx";
+import books from "../../data/books.ts";
+import Book from "../../components/Book.tsx";
 
 
 export default function UserPage() {
@@ -14,6 +16,11 @@ export default function UserPage() {
           <p className="text-gray-700">
             Browse available books, manage your loans, requests, and fines. Use the filter to find exactly what you need.
           </p>
+
+          {/* Book list */}
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {books.map((book) => (<Book key={book.id} book={book} />))}
+          </div>
 
           {/* For scrolling testing purpose */}
           <p className="text-gray-700 mt-4 mb-4 text-justify leading-100">
