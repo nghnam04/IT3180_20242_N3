@@ -36,7 +36,22 @@ cd IT3180_20242_N3/backend
 gradlew bootRun
 ```
 ### II. Cài đặt frontend:
-WIP
+- Cài đặt [NodeJS](https://nodejs.org/en/download) v22.14.0+
+- (Optional) Kiểm tra tình trạng cài đặt NodeJS:
+```batch
+node --version
+```
+![image](https://github.com/user-attachments/assets/5dd61710-ce9e-4c25-b213-aa9191e96ac6)
+
+Nếu hiện 1 dòng thông tin về số phiên bản NodeJS, cài đặt đã thành công.
+- Chuyển đến thư mục `frontend`, tiến hành cài đặt các dependency:
+```batch
+npm install
+```
+- Khởi chạy ứng dụng:
+```batch
+npm run dev
+```
 ## Hướng dẫn sử dụng
 WIP
 ## Tài liệu tham khảo
