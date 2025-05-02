@@ -85,5 +85,6 @@ INSERT INTO book_loans (id, book_copy_id, user_id, loan_date, return_date, actua
 
 -- Insert Staff
 INSERT INTO staff (id, name, email, role) VALUES
-    ('abcd1234-5678-9012-3456-789012345678', 'Librarian One', 'librarian1@library.com', 'LIBRARIAN'),
-    ('5678efgh-9012-3456-7890-123456789012', 'Librarian Two', 'librarian2@library.com', 'LIBRARIAN');
+    ('abcd1234-5678-9012-3456-789012345678', 'James Carter', 'jamesc@library.com', 'LIBRARIAN'),
+    ('5678efgh-9012-3456-7890-123456789012', 'Olivia Brooks', 'oliviab@library.com', 'LIBRARIAN'),
+    ('9012ijkl-3456-7890-1234-567890123456', 'Lily Thompson', 'lilyth@library.com', 'MANAGER');
