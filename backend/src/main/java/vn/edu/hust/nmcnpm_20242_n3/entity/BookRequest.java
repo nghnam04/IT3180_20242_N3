@@ -1,50 +1,57 @@
 package vn.edu.hust.nmcnpm_20242_n3.entity;
 
+import jakarta.persistence.*;
 import vn.edu.hust.nmcnpm_20242_n3.constant.BookRequestStatusEnum;
 import vn.edu.hust.nmcnpm_20242_n3.constant.BookRequestTypeEnum;
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import java.util.Date;
-
-// Needed for HTTP requests and responses
-@Setter
-@Getter
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "book_requests")
 public class BookRequest {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    BookLoan bookLoan;
+    @ManyToOne
+    @JoinColumn(name = "book_loan_id")
+    private BookLoan bookLoan;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    BookRequestStatusEnum status;
+    private BookRequestStatusEnum status;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    BookRequestTypeEnum type;
+    private BookRequestTypeEnum type;
 
-    @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    Date CreatedAt;
-    @UpdateTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    Date UpdatedAt;
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
 
-    @PrePersist
-    protected void onCreate() {
-        CreatedAt = new Date();
-        UpdatedAt = new Date();
+    @Column(nullable = false)
+    private LocalDateTime updatedAt;
+
+    public BookRequest() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
-    @PreUpdate
-    protected void onUpdate() {
-        UpdatedAt = new Date();
-    }
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
+
+    public BookLoan getBookLoan() { return bookLoan; }
+    public void setBookLoan(BookLoan bookLoan) { this.bookLoan = bookLoan; }
+
+    public BookRequestStatusEnum getStatus() { return status; }
+    public void setStatus(BookRequestStatusEnum status) { this.status = status; }
+
+    public BookRequestTypeEnum getType() { return type; }
+    public void setType(BookRequestTypeEnum type) { this.type = type; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 }

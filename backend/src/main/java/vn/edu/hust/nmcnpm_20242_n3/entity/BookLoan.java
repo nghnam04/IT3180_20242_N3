@@ -1,64 +1,78 @@
 package vn.edu.hust.nmcnpm_20242_n3.entity;
 
-import vn.edu.hust.nmcnpm_20242_n3.constant.BookLoanStatusEnum;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import vn.edu.hust.nmcnpm_20242_n3.constant.BookLoanStatusEnum;
 
-import java.util.Date;
-
-// Needed for HTTP requests and responses
-@Setter
-@Getter
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "book_loans")
 public class BookLoan {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    BookCopy bookCopy;
+    @ManyToOne
+    @JoinColumn(name = "book_copy_id")
+    private BookCopy bookCopy;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    User user;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    Date loanDate;
+    @Column(nullable = false)
+    private LocalDateTime loanDate;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    Date returnDate;
+    @Column(nullable = false)
+    private LocalDateTime returnDate;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = true)
-    Date actualReturnDate;
+    private LocalDateTime actualReturnDate;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    BookLoanStatusEnum status;
+    private BookLoanStatusEnum status;
 
-    @Column(nullable = true)
-    String currentBookRequestId;
+    private Integer currentBookRequestId;
 
-    @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    Date LoanedAt;
-    @UpdateTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    Date UpdatedAt;
+    @Column(nullable = false)
+    private LocalDateTime loanedAt;
 
-    @PrePersist
-    protected void onCreate() {
-        LoanedAt = new Date();
-        UpdatedAt = new Date();
+    @Column(nullable = false)
+    private LocalDateTime updatedAt;
+
+    public BookLoan() {
+        this.loanedAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
-    @PreUpdate
-    protected void onUpdate() {
-        UpdatedAt = new Date();
-    }
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
+
+    public BookCopy getBookCopy() { return bookCopy; }
+    public void setBookCopy(BookCopy bookCopy) { this.bookCopy = bookCopy; }
+
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
+
+    public LocalDateTime getLoanDate() { return loanDate; }
+    public void setLoanDate(LocalDateTime loanDate) { this.loanDate = loanDate; }
+
+    public LocalDateTime getReturnDate() { return returnDate; }
+    public void setReturnDate(LocalDateTime returnDate) { this.returnDate = returnDate; }
+
+    public LocalDateTime getActualReturnDate() { return actualReturnDate; }
+    public void setActualReturnDate(LocalDateTime actualReturnDate) { this.actualReturnDate = actualReturnDate; }
+
+    public BookLoanStatusEnum getStatus() { return status; }
+    public void setStatus(BookLoanStatusEnum status) { this.status = status; }
+
+    public Integer getCurrentBookRequestId() { return currentBookRequestId; }
+    public void setCurrentBookRequestId(Integer currentBookRequestId) { this.currentBookRequestId = currentBookRequestId; }
+
+    public LocalDateTime getLoanedAt() { return loanedAt; }
+    public void setLoanedAt(LocalDateTime loanedAt) { this.loanedAt = loanedAt; }
+
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 }
-
