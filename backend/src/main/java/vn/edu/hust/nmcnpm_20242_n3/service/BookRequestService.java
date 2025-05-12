@@ -34,7 +34,10 @@ public class BookRequestService {
         BookRequest request = bookRequestRepository.findById(requestId)
                 .orElseThrow(() -> new IllegalArgumentException("Request not found with ID: " + requestId));
 
-        BookLoan bookLoan = bookLoanService.findByRequestId(requestId);
+        BookLoan bookLoan = request.getBookLoan();
+        if (bookLoan == null) {
+            throw new IllegalStateException("Associated book loan not found for request ID: " + requestId);
+        }
 
         if (approve) {
             request.setStatus(BookRequestStatusEnum.ACCEPTED);
