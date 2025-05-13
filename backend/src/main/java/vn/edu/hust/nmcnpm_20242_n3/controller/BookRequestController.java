@@ -1,6 +1,7 @@
 package vn.edu.hust.nmcnpm_20242_n3.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.edu.hust.nmcnpm_20242_n3.entity.BookRequest;
@@ -20,15 +21,28 @@ public class BookRequestController {
     }
 
     @GetMapping
-    public List<BookRequest> getAllRequests() {
-        return bookRequestService.getAllRequests();
+    public ResponseEntity<?> getAllRequests() {
+        try {
+            List<BookRequest> requests = bookRequestService.getAllRequests();
+            return ResponseEntity.ok().body(requests);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
     }
 
     @PostMapping("/process/{requestId}/{approve}")
     public ResponseEntity<?> processRequest(@PathVariable String requestId, @PathVariable boolean approve) {
-        BookRequest updatedRequest = bookRequestService.processRequest(requestId, approve);
-        String message = approve ? "Request approved successfully" : "Request rejected successfully";
-        return ResponseEntity.ok().body(new ResponseMessage(updatedRequest, message));
+        try{
+            BookRequest updatedRequest = bookRequestService.processRequest(requestId, approve);
+            String message = approve ? "Request approved successfully" : "Request rejected successfully";
+            return ResponseEntity.ok().body(new ResponseMessage(updatedRequest, message));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error: " + e.getMessage());
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Error: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
     }
 
     static class ResponseMessage {
