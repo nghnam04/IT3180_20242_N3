@@ -3,7 +3,6 @@ package vn.edu.hust.nmcnpm_20242_n3.entity;
 import jakarta.persistence.*;
 import vn.edu.hust.nmcnpm_20242_n3.constant.BookRequestStatusEnum;
 import vn.edu.hust.nmcnpm_20242_n3.constant.BookRequestTypeEnum;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -14,26 +13,32 @@ public class BookRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "book_loan_id")
     private BookLoan bookLoan;
 
-    @Column(nullable = false)
+    @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private BookRequestStatusEnum status;
 
-    @Column(nullable = false)
+    @Column(name = "type", nullable = false)
     @Enumerated(EnumType.STRING)
     private BookRequestTypeEnum type;
 
-    @Column(nullable = false)
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(nullable = false)
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    public BookRequest() {
+    @PrePersist
+    protected void onCreate() {
         this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
 

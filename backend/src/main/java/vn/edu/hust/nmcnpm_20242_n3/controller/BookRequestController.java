@@ -9,7 +9,7 @@ import vn.edu.hust.nmcnpm_20242_n3.service.BookRequestService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin/requests")
+@RequestMapping("/api/book-requests")
 public class BookRequestController {
 
     private final BookRequestService bookRequestService;
@@ -20,12 +20,12 @@ public class BookRequestController {
     }
 
     @GetMapping
-    public List<BookRequest> getAllPendingRequests() {
-        return bookRequestService.getAllPendingRequests();
+    public List<BookRequest> getAllRequests() {
+        return bookRequestService.getAllRequests();
     }
 
     @PostMapping("/process/{requestId}/{approve}")
-    public ResponseEntity<?> processRequest(@PathVariable Integer requestId, @PathVariable boolean approve) {
+    public ResponseEntity<?> processRequest(@PathVariable String requestId, @PathVariable boolean approve) {
         BookRequest updatedRequest = bookRequestService.processRequest(requestId, approve);
         String message = approve ? "Request approved successfully" : "Request rejected successfully";
         return ResponseEntity.ok().body(new ResponseMessage(updatedRequest, message));

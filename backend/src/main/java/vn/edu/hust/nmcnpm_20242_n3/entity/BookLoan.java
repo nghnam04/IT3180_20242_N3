@@ -2,7 +2,6 @@ package vn.edu.hust.nmcnpm_20242_n3.entity;
 
 import jakarta.persistence.*;
 import vn.edu.hust.nmcnpm_20242_n3.constant.BookLoanStatusEnum;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -13,36 +12,44 @@ public class BookLoan {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "book_copy_id")
     private BookCopy bookCopy;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(nullable = false)
+    @Column(name = "loan_date", nullable = false)
     private LocalDateTime loanDate;
 
-    @Column(nullable = false)
+    @Column(name = "return_date", nullable = false)
     private LocalDateTime returnDate;
 
+    @Column(name = "actual_return_date")
     private LocalDateTime actualReturnDate;
 
-    @Column(nullable = false)
+    @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private BookLoanStatusEnum status;
 
+    @Column(name = "current_book_request_id")
     private Integer currentBookRequestId;
 
-    @Column(nullable = false)
+    @Column(name = "loaned_at", nullable = false)
     private LocalDateTime loanedAt;
 
-    @Column(nullable = false)
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    public BookLoan() {
+    @PrePersist
+    protected void onCreate() {
         this.loanedAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
 

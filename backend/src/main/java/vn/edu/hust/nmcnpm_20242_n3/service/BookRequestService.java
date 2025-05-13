@@ -12,6 +12,8 @@ import vn.edu.hust.nmcnpm_20242_n3.constant.BookRequestTypeEnum;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.Comparator;
 
 @Service
 public class BookRequestService {
@@ -25,14 +27,22 @@ public class BookRequestService {
         this.bookLoanService = bookLoanService;
     }
 
-    public List<BookRequest> getAllPendingRequests() {
-        return bookRequestRepository.findByStatusOrderByCreatedAtAsc(BookRequestStatusEnum.PENDING);
+    public List<BookRequest> getAllRequests() {
+        List<BookRequest> requests = (List<BookRequest>) bookRequestRepository.findAll();
+        return requests.stream()
+            .sorted(Comparator.comparing((BookRequest br) -> br.getStatus() == BookRequestStatusEnum.PENDING ? 0 : 1)
+                .thenComparing(BookRequest::getCreatedAt))
+            .collect(Collectors.toList());
     }
 
     @Transactional
-    public BookRequest processRequest(Integer requestId, boolean approve) {
+    public BookRequest processRequest(String requestId, boolean approve) {
         BookRequest request = bookRequestRepository.findById(requestId)
                 .orElseThrow(() -> new IllegalArgumentException("Request not found with ID: " + requestId));
+
+        if (request.getStatus() != BookRequestStatusEnum.PENDING) {
+            throw new IllegalStateException("Only PENDING requests can be processed");
+        }
 
         BookLoan bookLoan = request.getBookLoan();
         if (bookLoan == null) {
@@ -56,8 +66,6 @@ public class BookRequestService {
             }
         }
 
-        request.setUpdatedAt(LocalDateTime.now());
-        bookLoan.setUpdatedAt(LocalDateTime.now());
         bookLoan.setCurrentBookRequestId(null);
 
         bookLoanService.save(bookLoan);
