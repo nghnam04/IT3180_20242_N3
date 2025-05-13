@@ -7,6 +7,6 @@ import vn.edu.hust.nmcnpm_20242_n3.entity.BookLoan;
 import java.util.Optional;
 
 @Repository
-public interface BookLoanRepository extends CrudRepository<BookLoan, Integer> {
-    Optional<BookLoan> findByCurrentBookRequestId(Integer requestId);
+public interface BookLoanRepository extends CrudRepository<BookLoan, String> {
+    Optional<BookLoan> findByCurrentBookRequestId(String requestId);
 }
