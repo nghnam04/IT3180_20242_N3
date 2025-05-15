@@ -93,7 +93,8 @@ INSERT INTO book_loans (id, book_copy_id, user_id, loan_date, return_date, actua
 
 -- Insert Book Requests
 INSERT INTO book_requests (id, book_loan_id, status, type, created_at, updated_at) VALUES
-    ('1', '1', 'PENDING', 'BORROWING', CURRENT_TIMESTAMP - INTERVAL '1 day', CURRENT_TIMESTAMP - INTERVAL '1 day'),
+    ('1', NULL, 'PENDING', 'BORROWING', CURRENT_TIMESTAMP - INTERVAL '1 day', CURRENT_TIMESTAMP - INTERVAL '1 day'),
     ('2', '2', 'ACCEPTED', 'BORROWING', CURRENT_TIMESTAMP - INTERVAL '2 days', CURRENT_TIMESTAMP - INTERVAL '2 days'),
     ('3', '3', 'PENDING', 'RETURNING', CURRENT_TIMESTAMP - INTERVAL '3 days', CURRENT_TIMESTAMP - INTERVAL '3 days'),
-    ('4', '4', 'DENIED', 'RETURNING', CURRENT_TIMESTAMP - INTERVAL '4 days', CURRENT_TIMESTAMP - INTERVAL '4 days');
+    ('4', '4', 'DENIED', 'RETURNING', CURRENT_TIMESTAMP - INTERVAL '4 days', CURRENT_TIMESTAMP - INTERVAL '4 days'),
+    ('5', NULL, 'PENDING', 'BORROWING', CURRENT_TIMESTAMP - INTERVAL '5 days', CURRENT_TIMESTAMP - INTERVAL '5 days');

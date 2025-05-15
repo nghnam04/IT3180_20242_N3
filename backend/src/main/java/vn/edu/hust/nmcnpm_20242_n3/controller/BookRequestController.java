@@ -31,9 +31,9 @@ public class BookRequestController {
     }
 
     @PostMapping("/process/{requestId}/{approve}")
-    public ResponseEntity<?> processRequest(@PathVariable String requestId, @PathVariable boolean approve) {
-        try{
-            BookRequest updatedRequest = bookRequestService.processRequest(requestId, approve);
+    public ResponseEntity<?> processRequest(@PathVariable String requestId, @PathVariable boolean approve, @RequestParam(required = false) String bookCopyId) {
+        try {
+            BookRequest updatedRequest = bookRequestService.processRequest(requestId, approve, bookCopyId);
             String message = approve ? "Request approved successfully" : "Request rejected successfully";
             return ResponseEntity.ok().body(new ResponseMessage(updatedRequest, message));
         } catch (IllegalArgumentException e) {
