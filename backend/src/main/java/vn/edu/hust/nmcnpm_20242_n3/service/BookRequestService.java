@@ -95,8 +95,7 @@ public class BookRequestService {
                     throw new IllegalStateException("BookCopy not found for existing BookLoan with ID: " + bookLoan.getId());
                 }
             } else {
-                bookLoan.setStatus(BookLoanStatusEnum.NONRETURNABLE);
-                bookLoanService.save(bookLoan);
+                // Từ chối yêu cầu trả, không thay đổi trạng thái BookLoan
                 request.setStatus(BookRequestStatusEnum.DENIED);
             }
         }
