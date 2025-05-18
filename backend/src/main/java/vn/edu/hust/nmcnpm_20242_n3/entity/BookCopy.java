@@ -13,8 +13,8 @@ import vn.edu.hust.nmcnpm_20242_n3.constant.BookCopyStatusEnum;
 @Table(name = "book_copies")
 public class BookCopy {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
 
     @ManyToOne
     private Book originalBook;

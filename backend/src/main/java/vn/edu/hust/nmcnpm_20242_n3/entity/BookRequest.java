@@ -23,6 +23,13 @@ public class BookRequest {
     @ManyToOne(cascade = CascadeType.ALL)
     private BookLoan bookLoan;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    private BookCopy bookCopy;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+
+    private User user;
+
     @Enumerated(EnumType.STRING)
     private BookRequestStatusEnum status;
 
