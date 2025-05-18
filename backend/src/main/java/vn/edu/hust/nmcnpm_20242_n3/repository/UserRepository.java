@@ -14,3 +14,4 @@ public interface UserRepository extends CrudRepository<User, String> {
     List<User> findByRole_Name(RoleEnum role);
     List<User> findByEmail(String email);
 }
+
