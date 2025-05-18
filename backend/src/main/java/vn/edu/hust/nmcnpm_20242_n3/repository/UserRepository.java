@@ -12,6 +12,5 @@ import java.util.List;
 public interface UserRepository extends CrudRepository<User, String> {
     @Query("SELECT u FROM User u WHERE u.role.name = :role ORDER BY u.createdAt ASC")
     List<User> findByRole_Name(RoleEnum role);
-
     List<User> findByEmail(String email);
 }

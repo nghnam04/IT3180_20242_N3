@@ -10,15 +10,13 @@ public class StaffDTO {
     private String password;
     private Date createdAt;
     private Date updatedAt;
-    private Integer roleId;
-    private String roleName;
-    private RoleDTO role; 
+    private RoleDTO role;
 
     // Constructors
     public StaffDTO() {
     }
 
-    public StaffDTO(String id, String name, String userName, String email, String password, Date createdAt, Date updatedAt, Integer roleId, String roleName) {
+    public StaffDTO(String id, String name, String userName, String email, String password, Date createdAt, Date updatedAt, RoleDTO role) {
         this.id = id;
         this.name = name;
         this.userName = userName;
@@ -26,8 +24,7 @@ public class StaffDTO {
         this.password = password;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.roleId = roleId;
-        this.roleName = roleName;
+        this.role = role;
     }
 
     // Getters and Setters
@@ -85,22 +82,6 @@ public class StaffDTO {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public Integer getRoleId() {
-        return role != null && role.getId() != null ? role.getId() : roleId;
-    }
-
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
-    }
-
-    public String getRoleName() {
-        return role != null && role.getName() != null ? role.getName() : roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
     }
 
     public RoleDTO getRole() {

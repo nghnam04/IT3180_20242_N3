@@ -3,6 +3,7 @@ package vn.edu.hust.nmcnpm_20242_n3.service;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import vn.edu.hust.nmcnpm_20242_n3.dto.RoleDTO;
 import vn.edu.hust.nmcnpm_20242_n3.dto.StaffDTO;
 import vn.edu.hust.nmcnpm_20242_n3.entity.User;
 import vn.edu.hust.nmcnpm_20242_n3.entity.Role;
@@ -37,8 +38,12 @@ public class StaffService {
         dto.setCreatedAt(user.getCreatedAt());
         dto.setUpdatedAt(user.getUpdatedAt());
         if (user.getRole() != null) {
-            dto.setRoleId(user.getRole().getId());
-            dto.setRoleName(user.getRole().getName().toString());
+            RoleDTO roleDTO = new RoleDTO();
+            roleDTO.setId(user.getRole().getId());
+            roleDTO.setName(user.getRole().getName().toString());
+            // Optionally set permissions if needed
+            // roleDTO.setPermissions(user.getRole().getPermissions().stream().map(Permission::getName).collect(Collectors.toList()));
+            dto.setRole(roleDTO);
         }
         return dto;
     }
@@ -89,40 +94,34 @@ public class StaffService {
 
         User user = convertToEntity(staffDTO);
 
-        if (staffDTO.getRoleId() != null || staffDTO.getRoleName() != null) {
-            Role role = null;
-            if (staffDTO.getRoleId() != null) {
-                role = roleRepository.findById(staffDTO.getRoleId())
-                        .orElseThrow(() -> new IllegalArgumentException("Role not found with ID: " + staffDTO.getRoleId()));
-            } else if (staffDTO.getRoleName() != null) {
+        Role role = null;
+        if (staffDTO.getRole() != null && (staffDTO.getRole().getId() != null || staffDTO.getRole().getName() != null)) {
+            if (staffDTO.getRole().getId() != null) {
+                role = roleRepository.findById(staffDTO.getRole().getId())
+                        .orElseThrow(() -> new IllegalArgumentException("Role not found with ID: " + staffDTO.getRole().getId()));
+            } else if (staffDTO.getRole().getName() != null) {
                 RoleEnum roleEnum;
                 try {
-                    roleEnum = RoleEnum.valueOf(staffDTO.getRoleName());
+                    roleEnum = RoleEnum.valueOf(staffDTO.getRole().getName());
                 } catch (IllegalArgumentException e) {
-                    throw new IllegalArgumentException("Invalid role name: " + staffDTO.getRoleName());
+                    throw new IllegalArgumentException("Invalid role name: " + staffDTO.getRole().getName());
                 }
                 role = roleRepository.findByName(roleEnum)
-                        .orElseThrow(() -> new IllegalArgumentException("Role " + staffDTO.getRoleName() + " not found in database"));
+                        .orElseThrow(() -> new IllegalArgumentException("Role " + staffDTO.getRole().getName() + " not found in database"));
             }
 
-            if (staffDTO.getRoleName() != null) {
-                if (!RoleEnum.STAFF.equals(role.getName()) && !RoleEnum.ADMIN.equals(role.getName())) {
-                    throw new IllegalArgumentException("Role must be STAFF or ADMIN");
-                }
-                if (staffDTO.getRoleId() != null && !staffDTO.getRoleName().equals(role.getName().toString())) {
-                    throw new IllegalArgumentException("Role ID " + staffDTO.getRoleId() + " does not match role name " + staffDTO.getRoleName());
-                }
-            } else if (staffDTO.getRoleId() != null) {
-                if (!RoleEnum.STAFF.equals(role.getName()) && !RoleEnum.ADMIN.equals(role.getName())) {
-                    throw new IllegalArgumentException("Role must be STAFF or ADMIN");
-                }
+            if (!RoleEnum.STAFF.equals(role.getName()) && !RoleEnum.ADMIN.equals(role.getName())) {
+                throw new IllegalArgumentException("Role must be STAFF or ADMIN");
             }
-            user.setRole(role);
+            if (staffDTO.getRole().getId() != null && staffDTO.getRole().getName() != null &&
+                !staffDTO.getRole().getName().equals(role.getName().toString())) {
+                throw new IllegalArgumentException("Role ID " + staffDTO.getRole().getId() + " does not match role name " + staffDTO.getRole().getName());
+            }
         } else {
-            Role defaultRole = roleRepository.findByName(RoleEnum.STAFF)
+            role = roleRepository.findByName(RoleEnum.STAFF)
                     .orElseThrow(() -> new IllegalArgumentException("Default role STAFF not found in database"));
-            user.setRole(defaultRole);
         }
+        user.setRole(role);
 
         User savedUser = userRepository.save(user);
         return convertToDTO(savedUser);
@@ -149,33 +148,28 @@ public class StaffService {
         if (staffDTO.getPassword() != null && !staffDTO.getPassword().trim().isEmpty()) {
             existingUser.setPassword(staffDTO.getPassword());
         }
-        if (staffDTO.getRoleId() != null || staffDTO.getRoleName() != null) {
+        if (staffDTO.getRole() != null && (staffDTO.getRole().getId() != null || staffDTO.getRole().getName() != null)) {
             Role role = null;
-            if (staffDTO.getRoleId() != null) {
-                role = roleRepository.findById(staffDTO.getRoleId())
-                        .orElseThrow(() -> new IllegalArgumentException("Role not found with ID: " + staffDTO.getRoleId()));
-            } else if (staffDTO.getRoleName() != null) {
+            if (staffDTO.getRole().getId() != null) {
+                role = roleRepository.findById(staffDTO.getRole().getId())
+                        .orElseThrow(() -> new IllegalArgumentException("Role not found with ID: " + staffDTO.getRole().getId()));
+            } else if (staffDTO.getRole().getName() != null) {
                 RoleEnum roleEnum;
                 try {
-                    roleEnum = RoleEnum.valueOf(staffDTO.getRoleName());
+                    roleEnum = RoleEnum.valueOf(staffDTO.getRole().getName());
                 } catch (IllegalArgumentException e) {
-                    throw new IllegalArgumentException("Invalid role name: " + staffDTO.getRoleName());
+                    throw new IllegalArgumentException("Invalid role name: " + staffDTO.getRole().getName());
                 }
                 role = roleRepository.findByName(roleEnum)
-                        .orElseThrow(() -> new IllegalArgumentException("Role " + staffDTO.getRoleName() + " not found in database"));
+                        .orElseThrow(() -> new IllegalArgumentException("Role " + staffDTO.getRole().getName() + " not found in database"));
             }
 
-            if (staffDTO.getRoleName() != null) {
-                if (!RoleEnum.STAFF.equals(role.getName()) && !RoleEnum.ADMIN.equals(role.getName())) {
-                    throw new IllegalArgumentException("Role must be STAFF or ADMIN");
-                }
-                if (staffDTO.getRoleId() != null && !staffDTO.getRoleName().equals(role.getName().toString())) {
-                    throw new IllegalArgumentException("Role ID " + staffDTO.getRoleId() + " does not match role name " + staffDTO.getRoleName());
-                }
-            } else if (staffDTO.getRoleId() != null) {
-                if (!RoleEnum.STAFF.equals(role.getName()) && !RoleEnum.ADMIN.equals(role.getName())) {
-                    throw new IllegalArgumentException("Role must be STAFF or ADMIN");
-                }
+            if (!RoleEnum.STAFF.equals(role.getName()) && !RoleEnum.ADMIN.equals(role.getName())) {
+                throw new IllegalArgumentException("Role must be STAFF or ADMIN");
+            }
+            if (staffDTO.getRole().getId() != null && staffDTO.getRole().getName() != null &&
+                !staffDTO.getRole().getName().equals(role.getName().toString())) {
+                throw new IllegalArgumentException("Role ID " + staffDTO.getRole().getId() + " does not match role name " + staffDTO.getRole().getName());
             }
             existingUser.setRole(role);
         }
