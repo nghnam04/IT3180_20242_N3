@@ -172,6 +172,7 @@ public class BookRequestService {
         BookRequest bookRequest = new BookRequest();
         bookRequest.setUser(user);
         bookRequest.setBookCopy(bookCopy);
+        bookRequest.setBookLoan(bookLoan); 
         bookRequest.setType(BookRequestTypeEnum.RETURNING);
         bookRequest.setStatus(BookRequestStatusEnum.PENDING);
         return bookRequestRepository.save(bookRequest);
