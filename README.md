@@ -5,7 +5,7 @@ Hệ thống quản lý thư viện được phát triển nhằm hỗ trợ qu�
 
 ---
 
-## 👥 Nhóm thực hiện
+## 👥 Nhóm sinh viên thực hiện
 
 |STT | Tên               | MSSV     |
 |----|-------------------|----------|
@@ -20,9 +20,9 @@ Hệ thống quản lý thư viện được phát triển nhằm hỗ trợ qu�
 
 ---
 
-## Tính năng
+## 🚀 Tính năng
 
-1. 🚀 **Quản lý sách**
+1. **Quản lý sách**
    - Thêm, cập nhật, xóa sách.
    - Quản lý thông tin: tên sách, tác giả, thể loại, số lượng, v.v.
 
@@ -74,7 +74,6 @@ Hệ thống quản lý thư viện được phát triển nhằm hỗ trợ qu�
 | **Deployment**        | Docker Compose                            |
 | **Version Control**   | Git, GitHub                               |
 
-
 ---
 
 ## 📁 Cấu trúc
@@ -89,6 +88,7 @@ IT3180_20242_N3/
 ├── LICENSE                # Giấy phép dự án
 └── README.md              # Tài liệu dự án
 ```
+---
 
 ## Cài đặt
 ### I. Cài đặt backend và database (dev):
@@ -136,6 +136,7 @@ npm install
 ```batch
 npm run dev
 ```
+
 ---
 
 ## 🧭 Hướng dẫn sử dụng
@@ -151,6 +152,8 @@ npm run dev
 - Sau khi đăng nhập, sử dụng giao diện trực quan để thực hiện các chức năng phù hợp với quyền hạn của bạn.
 
 - Giao diện hỗ trợ thao tác dễ dàng, thân thiện với người dùng giúp quản lý và sử dụng thư viện hiệu quả hơn.
+
+---
 
 ## 📚 Tài liệu tham khảo
 
